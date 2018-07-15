@@ -7,7 +7,11 @@
  * @param {string} name     The item's name.
  * @property {string} name
  */
-
+class Item {
+  constructor(name) {
+    this.name = name;
+  }
+}
 
 /**
  * Class => Weapon(name, damage)
@@ -24,7 +28,13 @@
  * @param {number} damage   The weapon's damage.
  * @property {number} damage
  */
+class Weapon extends Item {
+  constructor(name, damage) {
+    super(name);
+    this.damage = damage;
+  }
 
+}
 
 /**
  * Weapon Extends Item Class
@@ -48,7 +58,12 @@
  * @param {number} energy     The energy the food provides.
  * @property {number} energy
  */
-
+class Food extends Item {
+  constructor(name, energy) {
+    super(name);
+    this.energy = energy;
+  }
+}
 
 /**
  * Food Extends Item Class
@@ -78,6 +93,108 @@
  * @property {method} getPack              Returns private variable `pack`.
  * @property {method} getMaxHealth         Returns private variable `maxHealth`.
  */
+
+ class Player extends Item {
+  constructor(name, health, strength, speed) {
+    super(name);
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
+    this._pack = [];
+    this._maxHealth = health;
+    this.isAlive = true;
+    this.equipped = false;
+  }
+  getPack() {
+    return this._pack;
+  }
+  getMaxHealth() {
+    return this._maxHealth;
+  }
+  takeItem(item) {
+    
+    if (this._pack.length < 3) {
+      console.log(name + ' has items ' + item);
+      this._pack.push(item);
+      return true;
+    }
+    else {
+      console.log('pack is full');
+      return false;
+    }
+  }
+  discardItem(item) {
+    if (this._pack.indexOf(item) >=0) {
+      this._pack.splice(this._pack.indexOf(item),1);
+      console.log(item + ' discarded');
+      return true;
+    }else {
+      console.log(item + ' nothing was discarded')
+      return false;
+    }
+  }
+  checkPack() {
+    console.log('pack items ' + this.getPack());
+  }  
+  equip(itemToEquip) {
+    if (itemToEquip instanceof Weapon === true && this._pack.includes(itemToEquip)) {
+      if (this.equipped !== false) {
+        this._pack.push(this.equipped);
+        this._pack.splice(this._pack.indexOf(itemToEquip),1);
+        this.equipped = itemToEquip;
+      }
+      else {
+        this._pack.splice(this._pack.indexOf(itemToEquip),1);
+        this.equipped = itemToEquip;
+      }
+    }
+    // if (itemToEquip instanceof Weapon === true) {
+    //   if (this._pack.includes(itemToEquip)) {
+    //     if (this.equipped !== false) {
+    //       this._pack.push(this.equipped);
+    //       const inPack = this._pack.indexOf(itemToEquip)
+    //       this._pack.splice(inPack, 1);  
+    //       this.equipped = itemToEquip;
+    //     }
+    //     else {
+    //       const inPack = this._pack.indexOf(itemToEquip)
+    //       this._pack.splice(inPack, 1);
+    //       this.equipped = itemToEquip;
+    //     }
+    //   }
+    // } 
+  }
+
+  eat(itemToEat) {
+    if (itemToEat instanceof Food === true && this._pack.includes(itemToEat)) {
+      this._pack.splice(this._pack.indexOf(itemToEat), 1);
+      this.health = this.health + itemToEat.energy;
+      if (itemToEat.energy + this.health > this._maxHealth) {
+        this.health = this._maxHealth;
+      }
+    }
+  }
+
+  useItem(item) {
+    if (item instanceof Weapon === true) {
+      this.equip(item);
+    }
+    if (item instanceof Food === true) {
+      this.eat(item);
+    }
+  }
+
+  equippedWith() {
+    if (this.equipped instanceof Weapon === true) {
+      // console.log(Player.name + ' is equipped with ' + Weapon.name)
+      return this.equipped.name;      
+    }
+    else {
+      // console.log('nothing equipped')
+      return false;
+    }
+  }
+}
 
 
 /**
@@ -110,7 +227,9 @@
  * @param {Item/Weapon/Food} item   The item to take.
  * @return {boolean} true/false     Whether player was able to store item in pack.
  */
+// class takeItem extends Player {
 
+// }
 
 /**
  * Player Class Method => discardItem(item)
@@ -223,8 +342,18 @@
  * @property {number} strength
  * @property {number} speed
  * @property {boolean} isAlive      Default value should be `true`.
- */
 
+ */
+class Zombie {
+  constructor (health, strength, speed) {
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
+    this._maxHealth = health;
+    this.isAlive = true;
+  }
+
+} 
 
 /**
  * Class => FastZombie(health, strength, speed)
@@ -240,7 +369,11 @@
  * @param {number} strength         The zombie's strength.
  * @param {number} speed            The zombie's speed.
  */
-
+class FastZombie extends Zombie {
+  constructor (health, strength, speed) {
+    super(health, strength, speed);
+  }
+}
 
 /**
  * FastZombie Extends Zombie Class
@@ -263,7 +396,11 @@
  * @param {number} strength         The zombie's strength.
  * @param {number} speed            The zombie's speed.
  */
-
+class StrongZombie extends Zombie {
+  constructor (health, strength, speed) {
+    super(health, strength, speed);
+  }
+}
 
 /**
  * StrongZombie Extends Zombie Class
@@ -286,7 +423,11 @@
  * @param {number} strength         The zombie's strength.
  * @param {number} speed            The zombie's speed.
  */
-
+class RangedZombie extends Zombie {
+  constructor (health, strength, speed) {
+    super(health, strength, speed);
+  }
+}
 
 /**
  * RangedZombie Extends Zombie Class
@@ -309,7 +450,11 @@
  * @param {number} strength         The zombie's strength.
  * @param {number} speed            The zombie's speed.
  */
-
+class ExplodingZombie extends Zombie {
+  constructor (health, strength, speed) {
+    super(health, strength, speed);
+  }
+}
 
 /**
  * ExplodingZombie Extends Zombie Class
